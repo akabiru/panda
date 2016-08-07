@@ -1,5 +1,6 @@
 require "panda/version"
 require "panda/utils"
+require "panda/record/base"
 require "panda/routing/router"
 require "panda/routing/mapper"
 require "panda/base_controller"
