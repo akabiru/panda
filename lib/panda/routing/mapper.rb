@@ -1,23 +1,33 @@
 module Panda
   module Routing
     class Mapper
-      def initialize(env, endpoints)
-        @env = env
+      attr_reader :request, :endpoints
+
+      def initialize(endpoints)
         @endpoints = endpoints
       end
 
-      def perform
-        path = @env["PATH_INFO"]
-        verb = @env["REQUEST_METHOD"]
+      def perform(request)
+        @request = request
+        path = request.path_info
+        verb = request.request_method
 
-        @endpoints[verb].each do |route|
-          next unless route[:path].match(path)
-          next unless route[:target] =~ /^([^#]+)#([^#]+)$/
-          controller_name = $1.to_camel_case
-          controller = Object.const_get("#{controller_name}Controller")
-          return controller.action($2)
-        end if @endpoints[verb]
-        false
+        endpoints[verb].detect do |endpoint|
+          match_path_with_endpoint(path, endpoint)
+        end
+      end
+
+      private
+
+      def match_path_with_endpoint(path, endpoint)
+        regex, placeholders = endpoint[:pattern]
+        if regex =~ path
+          match_data = $~
+          placeholders.each do |placeholder|
+            request.update_param(placeholder, match_data[placeholder])
+          end
+          return true
+        end
       end
     end
   end

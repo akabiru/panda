@@ -25,23 +25,6 @@ module Panda
         attributes.each { |column, value| send("#{column}=", value) }
       end
 
-      def self.to_table(name)
-        @table = name.to_s
-      end
-
-      def self.property(column_name, constraints)
-        @properties ||= {}
-        @properties[column_name] = constraints
-      end
-
-      def self.create_table
-        Database.execute_query(
-          "CREATE TABLE IF NOT EXISTS #{table} "  \
-          "(#{column_names_with_constraints.join(', ')})"
-        )
-        build_column_methods
-      end
-
       def save
         query = if id
                   "UPDATE #{model_table} SET #{update_placeholders}" \
@@ -66,6 +49,23 @@ module Panda
         self.class.destroy(id)
       end
 
+      def self.to_table(name)
+        @table = name.to_s
+      end
+
+      def self.property(column_name, constraints)
+        @properties ||= {}
+        @properties[column_name] = constraints
+      end
+
+      def self.create_table
+        Database.execute_query(
+          "CREATE TABLE IF NOT EXISTS #{table} "  \
+          "(#{column_names_with_constraints.join(', ')})"
+        )
+        build_column_methods
+      end
+
       def self.create(attributes)
         model = new(attributes)
         model.save
@@ -74,13 +74,14 @@ module Panda
 
       def self.all
         Database.execute_query(
-          "SELECT * FROM #{table} ORDER BY id DESC"
+          "SELECT * FROM #{table} ORDER BY id ASC"
         ).map(&method(:get_model_object))
       end
 
       def self.find(id)
         row = Database.execute_query(
-          "SELECT * FROM #{table} WHERE id = ?", id.to_i
+          "SELECT * FROM #{table} WHERE id = ?",
+          id.to_i
         ).first
         get_model_object(row)
       end

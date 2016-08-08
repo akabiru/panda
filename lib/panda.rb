@@ -16,22 +16,32 @@ module Panda
 
     def call(env)
       return [500, {}, []] if env["PATH_INFO"] == "/favicon.ico"
-      get_rack_app(env)
+      request = Rack::Request.new(env)
+      handler = mapper.perform(request)
+      if handler
+        call_controller_action(request, handler[:target])
+      else
+        process_invalid_request(request)
+      end
     end
 
     private
 
-    def get_rack_app(env)
-      handler = Routing::Mapper.new(env, routes.endpoints).perform
-      if handler
-        handler.call(env)
-      else
-        [
-          404,
-          {},
-          ["Oops! No route for #{env['REQUEST_METHOD']} #{env['PATH_INFO']}"]
-        ]
-      end
+    def call_controller_action(request, target)
+      controller = Object.const_get("#{target[0]}Controller")
+      controller.new(request).dispatch(target[1])
+    end
+
+    def process_invalid_request(request)
+      [
+        404,
+        {},
+        ["Oops! No route for #{request.request_method} #{request.path_info}"]
+      ]
+    end
+
+    def mapper
+      @mapper ||= Routing::Mapper.new(routes.endpoints)
     end
   end
 end

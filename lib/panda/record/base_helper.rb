@@ -29,7 +29,7 @@ module Panda
 
       def update_placeholders(columns = self.class.properties.keys)
         columns.delete(:id)
-        columns.map { |column| "#{column} = ?" }.join(", ")
+        columns.keys.map { |column| "#{column} = ?" }.join(", ")
       end
 
       def update_values(attributes)
