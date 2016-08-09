@@ -24,10 +24,26 @@ module Panda
       private
 
       def route(verb, url, options = {})
+        url = "/#{url}" unless url[0] == "/"
         @endpoints[verb] << {
+          pattern: match_placeholders(url),
           path: Regexp.new("^#{url}$"),
-          target: options.fetch(:to, nil)
+          target: set_controller_action(options[:to])
         }
+      end
+
+      def match_placeholders(path)
+        placeholders = []
+        path_ = path.gsub(/(:\w+)/) do |match|
+          placeholders << match[1..-1].freeze
+          "(?<#{placeholders.last}>\\w+)"
+        end
+        [/^#{path_}$/, placeholders]
+      end
+
+      def set_controller_action(string)
+        string =~ /^([^#]+)#([^#]+)$/
+        [$1.to_camel_case, $2]
       end
     end
   end
