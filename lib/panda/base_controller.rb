@@ -59,10 +59,16 @@ module Panda
 
     def layout_view_template(view_name)
       layout_template = Tilt::ERBTemplate.new(
-        File.join("app", "views", "layouts", "application.html.erb")
+        File.join(APP_ROOT, "app", "views", "layouts", "application.html.erb")
       )
       view_template = Tilt::ERBTemplate.new(
-        File.join("app", "views", controller_name, "#{view_name}.html.erb")
+        File.join(
+          APP_ROOT,
+          "app",
+          "views",
+          controller_name,
+          "#{view_name}.html.erb"
+        )
       )
       [layout_template, view_template]
     end

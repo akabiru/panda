@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "factory_girl"
   spec.add_development_dependency "coveralls"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "capybara"
 
   spec.add_runtime_dependency "rack"
   spec.add_runtime_dependency "tilt"

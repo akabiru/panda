@@ -21,6 +21,8 @@ module Panda
 
       def patch(path, options = {}) route "PATCH", path, options end
 
+      def root(target) get "/", to: target end
+
       private
 
       def route(verb, url, options = {})
