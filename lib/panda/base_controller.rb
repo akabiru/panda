@@ -33,7 +33,7 @@ module Panda
       layout_template, view_template = layout_view_template(view_name)
       title = view_name.to_s.tr("_", " ")
       layout_template.render(self, title: title) do
-        view_template.render(self, locals.merge(view_assigns))
+        view_template.render(self, locals)
       end
     end
 

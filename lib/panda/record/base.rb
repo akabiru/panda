@@ -26,15 +26,12 @@ module Panda
       end
 
       def save
-        query = if id
-                  "UPDATE #{model_table} SET #{update_placeholders}" \
-                  " WHERE  id = ?"
-                else
-                  "INSERT INTO #{model_table} (#{current_table_columns})" \
-                  " VALUES (#{current_table_placeholders})"
-                end
-        values = id ? (record_values << send(id)) : record_values
-        Database.execute_query(query, values)
+        Database.execute_query(
+          "INSERT INTO #{model_table} (#{current_table_columns})" \
+          " VALUES (#{current_table_placeholders})",
+          record_values
+        )
+        true
       end
 
       def update(attributes)
@@ -44,6 +41,8 @@ module Panda
           update_values(attributes)
         )
       end
+
+      alias save! save
 
       def destroy
         self.class.destroy(id)
@@ -94,12 +93,26 @@ module Panda
         get_model_object(row)
       end
 
+      [%w(last DESC), %w(first ASC)].each do |method_name_and_order|
+        define_singleton_method((method_name_and_order[0]).to_sym) do
+          row = Database.execute_query(
+            "SELECT * FROM #{table} ORDER BY id " \
+            "#{method_name_and_order[1]} LIMIT 1"
+          ).first
+          get_model_object(row) unless row.nil?
+        end
+      end
+
       def self.count
         Database.execute_query("SELECT COUNT (*) FROM #{table}")[0][0]
       end
 
       def self.destroy(id)
         Database.execute_query("DELETE FROM #{table} WHERE id = ?", id)
+      end
+
+      def self.destroy_all
+        Database.execute_query "DELETE FROM #{table}"
       end
     end
   end

@@ -27,7 +27,7 @@ module Panda
         columns_without_id.map(&method(:send))
       end
 
-      def update_placeholders(columns = self.class.properties.keys)
+      def update_placeholders(columns = self.class.properties)
         columns.delete(:id)
         columns.keys.map { |column| "#{column} = ?" }.join(", ")
       end

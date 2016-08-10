@@ -30,6 +30,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rack-test", "~> 0.6"
+  spec.add_development_dependency "faker"
+  spec.add_development_dependency "factory_girl"
+  spec.add_development_dependency "coveralls"
   spec.add_development_dependency "pry"
 
   spec.add_runtime_dependency "rack"
