@@ -6,44 +6,31 @@ module Panda
     class Base
       include Record::BaseHelper
 
-      class << self
-        attr_reader :properties, :table
-
-        private(
-          :column_names_with_constraints,
-          :parse_constraints,
-          :build_column_methods,
-          :get_model_object,
-          :type,
-          :primary_key,
-          :nullable,
-          :default
-        )
-      end
-
       def initialize(attributes = {})
         attributes.each { |column, value| send("#{column}=", value) }
       end
 
       def save
         query = if id
-                  "UPDATE #{model_table} SET #{update_placeholders}" \
-                  " WHERE  id = ?"
+                  "UPDATE #{model_table} SET " \
+                  "#{update_placeholders} WHERE id = ?"
                 else
                   "INSERT INTO #{model_table} (#{current_table_columns})" \
                   " VALUES (#{current_table_placeholders})"
                 end
-        values = id ? (record_values << send(id)) : record_values
+        values = id ? record_values << id : record_values
         Database.execute_query(query, values)
+        true
       end
 
       def update(attributes)
-        Database.execute_query(
-          "UPDATE #{model_table} SET " \
-          "#{update_placeholders(attributes)} WHERE  id = ?",
-          update_values(attributes)
-        )
+        attributes.each do |key, value|
+          send("#{key}=", value)
+        end
+        save
       end
+
+      alias save! save
 
       def destroy
         self.class.destroy(id)
@@ -94,12 +81,26 @@ module Panda
         get_model_object(row)
       end
 
+      [%w(last DESC), %w(first ASC)].each do |method_name_and_order|
+        define_singleton_method((method_name_and_order[0]).to_sym) do
+          row = Database.execute_query(
+            "SELECT * FROM #{table} ORDER BY id " \
+            "#{method_name_and_order[1]} LIMIT 1"
+          ).first
+          get_model_object(row) unless row.nil?
+        end
+      end
+
       def self.count
         Database.execute_query("SELECT COUNT (*) FROM #{table}")[0][0]
       end
 
       def self.destroy(id)
         Database.execute_query("DELETE FROM #{table} WHERE id = ?", id)
+      end
+
+      def self.destroy_all
+        Database.execute_query "DELETE FROM #{table}"
       end
     end
   end

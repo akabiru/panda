@@ -33,7 +33,7 @@ module Panda
       layout_template, view_template = layout_view_template(view_name)
       title = view_name.to_s.tr("_", " ")
       layout_template.render(self, title: title) do
-        view_template.render(self, locals.merge(view_assigns))
+        view_template.render(self, locals)
       end
     end
 
@@ -49,20 +49,18 @@ module Panda
 
     private
 
-    def view_assigns
-      vars = {}
-      instance_variables.each do |name|
-        vars[name[1..-1]] = instance_variable_get(name)
-      end
-      vars
-    end
-
     def layout_view_template(view_name)
       layout_template = Tilt::ERBTemplate.new(
-        File.join("app", "views", "layouts", "application.html.erb")
+        File.join(APP_ROOT, "app", "views", "layouts", "application.html.erb")
       )
       view_template = Tilt::ERBTemplate.new(
-        File.join("app", "views", controller_name, "#{view_name}.html.erb")
+        File.join(
+          APP_ROOT,
+          "app",
+          "views",
+          controller_name,
+          "#{view_name}.html.erb"
+        )
       )
       [layout_template, view_template]
     end

@@ -1,0 +1,3 @@
+[submodule "spec/support/panda_todo"]
+	path = spec/support/panda_todo
+	url = https://github.com/andela-akabiru/panda_todo

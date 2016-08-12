@@ -11,15 +11,13 @@ module Panda
         instance_eval(&block)
       end
 
-      def get(path, options = {}) route "GET", path, options end
+      %w(get post delete put patch).each do |method_name|
+        define_method(method_name) do |path, options|
+          route method_name.upcase, path, options
+        end
+      end
 
-      def post(path, options = {}) route "POST", path, options end
-
-      def delete(path, options = {}) route "DELETE", path, options end
-
-      def put(path, options = {}) route "PUT", path, options end
-
-      def patch(path, options = {}) route "PATCH", path, options end
+      def root(target) get "/", to: target end
 
       private
 
