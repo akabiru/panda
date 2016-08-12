@@ -3,11 +3,31 @@ require "spec_helper"
 RSpec.describe Panda::Record::Base do
   before(:all) { create_list(:todo, 4) }
 
-  describe "#save" do
-    let(:record) { build(:todo) }
+  describe "subclasses" do
+    subject { Todo }
 
-    it "creates a new record" do
-      expect { record.save }.to change(Todo, :count).by(1)
+    it "includes BaseHelper" do
+      expect(subject.included_modules.include?(Panda::Record::BaseHelper)).
+        to be true
+    end
+  end
+
+  describe "#save" do
+    context "when record does not exist" do
+      let(:record) { build(:todo) }
+
+      it "creates a new record" do
+        expect { record.save }.to change(Todo, :count).by(1)
+      end
+    end
+
+    context "when the record exists" do
+      let(:record) { Todo.first }
+
+      it "updates the record" do
+        record.title = "Ipsum"
+        record.save
+      end
     end
   end
 

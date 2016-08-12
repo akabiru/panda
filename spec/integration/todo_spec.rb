@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe "Todo", type: :feature do
-
   scenario "user visits root path" do
     visit "/"
     expect(page).to have_content("My Todos")
@@ -28,7 +27,6 @@ RSpec.describe "Todo", type: :feature do
   end
 
   scenario "user clicks show on a todo" do
-    todo = Todo.last
     visit "/"
     click_link "Show"
     expect(page).to have_content("Panda Make it awesome. Done")
@@ -60,6 +58,11 @@ RSpec.describe "Todo", type: :feature do
 
     expect(current_path).to eq("/todo")
     expect(page).not_to have_content("Shifu Pending")
+  end
+
+  scenario "user visits wrong address" do
+    visit "/foobar"
+    expect(page).to have_content("Oops! No route for GET /foobar")
   end
 
   after(:all) { Todo.destroy_all }

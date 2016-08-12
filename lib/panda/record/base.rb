@@ -6,40 +6,28 @@ module Panda
     class Base
       include Record::BaseHelper
 
-      class << self
-        attr_reader :properties, :table
-
-        private(
-          :column_names_with_constraints,
-          :parse_constraints,
-          :build_column_methods,
-          :get_model_object,
-          :type,
-          :primary_key,
-          :nullable,
-          :default
-        )
-      end
-
       def initialize(attributes = {})
         attributes.each { |column, value| send("#{column}=", value) }
       end
 
       def save
-        Database.execute_query(
-          "INSERT INTO #{model_table} (#{current_table_columns})" \
-          " VALUES (#{current_table_placeholders})",
-          record_values
-        )
+        query = if id
+                  "UPDATE #{model_table} SET " \
+                  "#{update_placeholders} WHERE id = ?"
+                else
+                  "INSERT INTO #{model_table} (#{current_table_columns})" \
+                  " VALUES (#{current_table_placeholders})"
+                end
+        values = id ? record_values << id : record_values
+        Database.execute_query(query, values)
         true
       end
 
       def update(attributes)
-        Database.execute_query(
-          "UPDATE #{model_table} SET " \
-          "#{update_placeholders(attributes)} WHERE  id = ?",
-          update_values(attributes)
-        )
+        attributes.each do |key, value|
+          send("#{key}=", value)
+        end
+        save
       end
 
       alias save! save

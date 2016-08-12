@@ -49,14 +49,6 @@ module Panda
 
     private
 
-    def view_assigns
-      vars = {}
-      instance_variables.each do |name|
-        vars[name[1..-1]] = instance_variable_get(name)
-      end
-      vars
-    end
-
     def layout_view_template(view_name)
       layout_template = Tilt::ERBTemplate.new(
         File.join(APP_ROOT, "app", "views", "layouts", "application.html.erb")
