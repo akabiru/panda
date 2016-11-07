@@ -1,6 +1,6 @@
 ![](https://www.dropbox.com/s/yfhnvtjd7iei1e4/panda.png?raw=1)
 
-[![Code Climate](https://codeclimate.com/github/andela-akabiru/panda/badges/gpa.svg)](https://codeclimate.com/github/andela-akabiru/panda) [![Coverage Status](https://coveralls.io/repos/github/andela-akabiru/panda/badge.svg?branch=master)](https://coveralls.io/github/andela-akabiru/panda?branch=master) [![Issue Count](https://codeclimate.com/github/andela-akabiru/panda/badges/issue_count.svg)](https://codeclimate.com/github/andela-akabiru/panda) [![Build Status](https://travis-ci.org/andela-akabiru/panda.svg?branch=master)](https://travis-ci.org/andela-akabiru/panda)
+[![Code Climate](https://codeclimate.com/github/andela-akabiru/panda/badges/gpa.svg)](https://codeclimate.com/github/andela-akabiru/panda) [![Coverage Status](https://coveralls.io/repos/github/andela-akabiru/panda/badge.svg?branch=master)](https://coveralls.io/github/andela-akabiru/panda?branch=master) [![Issue Count](https://codeclimate.com/github/andela-akabiru/panda/badges/issue_count.svg)](https://codeclimate.com/github/andela-akabiru/panda) [![Build Status](https://travis-ci.org/akabiru/panda.svg?branch=master)](https://travis-ci.org/akabiru/panda)
 
 # Panda
 
