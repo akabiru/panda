@@ -4,10 +4,10 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'panda/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "panda"
+  spec.name          = "panda_frwk"
   spec.version       = Panda::VERSION
   spec.authors       = ["Austin Kabiru"]
-  spec.email         = ["austin.kabiru@andela.com"]
+  spec.email         = ["makabby@gmail.com"]
 
   spec.summary       = %q{Panda is a simple MVC framework. }
   spec.description   = %q{Panda is an mvc framework built with Ruby for building web applications}
