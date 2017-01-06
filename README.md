@@ -1,6 +1,7 @@
 ![](https://www.dropbox.com/s/yfhnvtjd7iei1e4/panda.png?raw=1)
 
 [![Code Climate](https://codeclimate.com/github/andela-akabiru/panda/badges/gpa.svg)](https://codeclimate.com/github/andela-akabiru/panda) [![Coverage Status](https://coveralls.io/repos/github/andela-akabiru/panda/badge.svg?branch=master)](https://coveralls.io/github/andela-akabiru/panda?branch=master) [![Issue Count](https://codeclimate.com/github/andela-akabiru/panda/badges/issue_count.svg)](https://codeclimate.com/github/andela-akabiru/panda) [![Build Status](https://travis-ci.org/akabiru/panda.svg?branch=master)](https://travis-ci.org/akabiru/panda)
+[![Dependency Status](https://gemnasium.com/badges/github.com/andela-akabiru/panda.svg)](https://gemnasium.com/github.com/andela-akabiru/panda) [![Gem Version](https://badge.fury.io/rb/panda_frwk.svg)](https://badge.fury.io/rb/panda_frwk)
 
 # Panda
 
@@ -15,7 +16,7 @@ Clone Panda
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'panda', path: 'path_to_panda'
+gem 'panda_frwk'
 ```
 
 And then execute:
