@@ -11,7 +11,7 @@ Panda is an mvc framework built with Ruby for building web applications.
 
 Clone Panda
 
-    $ git clone https://github.com/andela-akabiru/panda
+    $ git clone https://github.com/akabiru/panda
 
 Add this line to your application's Gemfile:
 
